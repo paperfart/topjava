@@ -12,6 +12,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -40,6 +42,7 @@ public class MealServlet extends HttpServlet {
         String time = request.getParameter("time");
         if (action == null) {
             List<MealTo> mealToList = MealsUtil.transformMealTo(storage.getMealList());
+            mealToList.sort(Comparator.comparing(MealTo::getDateTime));
             request.setAttribute("meals", mealToList);
             request.getRequestDispatcher("/WEB-INF/jsp/meals.jsp").forward(request, response);
             return;
