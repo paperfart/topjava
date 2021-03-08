@@ -12,7 +12,6 @@
 
         th, td {
             padding: 5px;
-
         }
     </style>
 </head>
@@ -32,14 +31,12 @@
         <c:forEach items="${meals}" var="meal">
 
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
-            <c:choose>
-                <c:when test="${meal.excess == true}"> <tr style="color: crimson"> </c:when>
-                <c:when test="${meal.excess == false}"> <tr style="color:blue "> </c:when>
-            </c:choose>
-            <td><%=TimeUtil.formatDate(meal.getDateTime())%>
-            </td>
-            <td>${meal.description}</td>
-            <td>${meal.calories}</td>
+            <tr style="color:
+                <c:out value="${meal.excess == true ? 'crimson' : 'blue'}"/> ">
+                <td><%=TimeUtil.formatDate(meal.getDateTime())%>
+                </td>
+                <td>${meal.description}</td>
+                <td>${meal.calories}</td>
             </tr>
         </c:forEach>
     </table>
