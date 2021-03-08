@@ -7,8 +7,16 @@ import java.time.format.DateTimeFormatter;
 public class TimeUtil {
 
     public static String formatDate(LocalDateTime datetime) {
+        if (datetime != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return datetime.format(formatter);
+        }
+        return "";
+    }
+
+    public static LocalDateTime formatDate(String s) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return datetime.format(formatter);
+        return LocalDateTime.parse(s, formatter);
     }
 
     public static boolean isBetweenHalfOpen(LocalTime lt, LocalTime startTime, LocalTime endTime) {

@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-<h3><a href="index.html">Home</a></h3>
+<h3><a href="../../index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
 <div>
@@ -37,9 +37,13 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
+                <td><a href="meals?time=${meal.dateTime}&action=edit">Edit</a></td>
+                <td><a href="meals?time=${meal.dateTime}&action=delete">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
 </div>
+<br/><input type="button" onclick="location.href='meals?action=new';" value="Create new"/>
+
 </body>
 </html>

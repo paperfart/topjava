@@ -62,7 +62,7 @@ public class MealsUtil {
         return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 
-    private static List<MealTo> transformMealTo(List<Meal> meals) {
+    public static List<MealTo> transformMealTo(List<Meal> meals) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum));
         return meals.stream()
