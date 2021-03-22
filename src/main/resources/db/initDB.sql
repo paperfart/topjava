@@ -27,7 +27,9 @@ CREATE TABLE user_roles
 
 create table meals
 (
-    id          int       not null,
+    id          int
+        constraint meals_pk
+            primary key default nextval('global_seq'),
     user_id     int       not null
         constraint meals_id_user_id_fk
             references users
@@ -38,7 +40,7 @@ create table meals
 );
 
 create unique index meals_datetime_uindex
-    on meals (datetime);
+    on meals (datetime desc);
 
 create unique index meals_id_uindex
     on meals (id);
@@ -46,7 +48,5 @@ create unique index meals_id_uindex
 create index meals_user_id_index
     on meals (user_id);
 
-alter table meals
-    add constraint meals_pk
-        primary key (id);
+
 
