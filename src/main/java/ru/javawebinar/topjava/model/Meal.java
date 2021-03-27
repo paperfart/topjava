@@ -13,7 +13,12 @@ import java.time.LocalTime;
 @NamedQueries({
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id =:id and m.user.id=:userId"),
         @NamedQuery(name = Meal.BY_ID, query = "SELECT m FROM Meal m WHERE m.id=:id and m.user.id=:userId"),
-        @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email"),
+        @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime desc "),
+        @NamedQuery(name = Meal.ALL_HALF_OPEN, query = "SELECT m FROM Meal m WHERE m.user.id=:userId and m.dateTime >=:startDate" +
+                " and m.dateTime <:endDate ORDER BY m.dateTime desc "),
+        @NamedQuery(name = Meal.UPDATE, query = "UPDATE Meal SET dateTime=:date,calories=:calories,description=:description" +
+                " WHERE id=:id and user.id=:userId ")
+
 })
 
 @Entity
@@ -22,8 +27,10 @@ import java.time.LocalTime;
 
 public class Meal extends AbstractBaseEntity {
     public static final String DELETE = "Meal.delete";
-    public static final String BY_ID = "Meal.getById";
     public static final String ALL_SORTED = "Meal.getAllSorted";
+    public static final String ALL_HALF_OPEN = "Meal.getAllHalfOpen";
+    public static final String BY_ID = "Meal.byId";
+    public static final String UPDATE = "Meal.update";
 
 
     @Column(name = "date_time", nullable = false)

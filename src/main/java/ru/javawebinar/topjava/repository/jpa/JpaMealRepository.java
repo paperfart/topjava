@@ -21,12 +21,22 @@ public class JpaMealRepository implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
+        User ref = em.getReference(User.class, userId);
         if (meal.isNew()) {
+            meal.setUser(ref);
             em.persist(meal);
-            return meal;
         } else {
-            return em.merge(meal);
+            if (em.createNamedQuery(Meal.UPDATE)
+                    .setParameter("date", meal.getDateTime())
+                    .setParameter("calories", meal.getCalories())
+                    .setParameter("description", meal.getDescription())
+                    .setParameter("id", meal.id())
+                    .setParameter("userId", userId)
+                    .executeUpdate() == 0) {
+                return null;
+            }
         }
+        return meal;
     }
 
     @Override
@@ -40,19 +50,26 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        return (Meal) em.createNamedQuery(Meal.BY_ID)
+        List<Meal> resultList = em.createNamedQuery(Meal.BY_ID, Meal.class)
                 .setParameter("id", id)
                 .setParameter("userId", userId)
-                .getSingleResult();
+                .getResultList();
+        return resultList.size() > 0 ? resultList.get(0) : null;
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return null;
+        return em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return null;
+        return em.createNamedQuery(Meal.ALL_HALF_OPEN, Meal.class)
+                .setParameter("userId", userId)
+                .setParameter("startDate", startDateTime)
+                .setParameter("endDate", endDateTime)
+                .getResultList();
     }
 }
