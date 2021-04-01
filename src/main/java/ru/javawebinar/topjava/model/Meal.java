@@ -3,8 +3,7 @@ package ru.javawebinar.topjava.model;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,8 +21,8 @@ import java.time.LocalTime;
 })
 
 @Entity
-@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = "user_id", name = "uniq_user_id"),
-        @UniqueConstraint(columnNames = "date_time", name = "uniq_date_time")})
+@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"},
+        name = "meals_unique_user_datetime_idx")})
 
 public class Meal extends AbstractBaseEntity {
     public static final String DELETE = "Meal.delete";
@@ -32,17 +31,23 @@ public class Meal extends AbstractBaseEntity {
     public static final String BY_ID = "Meal.byId";
     public static final String UPDATE = "Meal.update";
 
-
+    @NotNull
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
     @NotBlank
     @Column(name = "description", nullable = false)
+    @Size(min = 2, max = 120)
     private String description;
 
+
     @Column(name = "calories", nullable = false)
+    @Min(value = 5, message = "calories should be not less than 5")
+    @Max(value = 5000, message = "calories should be not more than 5000")
     private int calories;
 
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
