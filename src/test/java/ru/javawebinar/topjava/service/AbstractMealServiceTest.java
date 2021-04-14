@@ -31,12 +31,13 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:spring/spring-db.xml",
+        "classpath:spring/spring-cache.xml"
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(resolver = Profiles.ActiveDbProfileResolver.class)
-public class MealServiceTest {
+public class AbstractMealServiceTest {
     private static final Logger log = getLogger("result");
 
     private static final StringBuilder results = new StringBuilder();

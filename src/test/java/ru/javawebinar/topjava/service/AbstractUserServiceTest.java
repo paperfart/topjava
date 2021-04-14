@@ -1,8 +1,10 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,15 +24,24 @@ import static ru.javawebinar.topjava.UserTestData.*;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:spring/spring-db.xml",
+        "classpath:spring/spring-cache.xml"
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(resolver = Profiles.ActiveDbProfileResolver.class)
-public class UserServiceTest {
+public abstract class AbstractUserServiceTest {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Before
+    public void setup() {
+        cacheManager.getCache("users").clear();
+    }
 
     @Test
     public void create() {
