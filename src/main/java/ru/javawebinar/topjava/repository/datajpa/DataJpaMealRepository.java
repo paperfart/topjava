@@ -6,15 +6,11 @@ import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class DataJpaMealRepository implements MealRepository {
-
-
     private final CrudMealRepository crudRepository;
     private final CrudUserRepository crudUserRepository;
-
 
     public DataJpaMealRepository(CrudMealRepository crudRepository, CrudUserRepository crudUserRepository) {
         this.crudRepository = crudRepository;

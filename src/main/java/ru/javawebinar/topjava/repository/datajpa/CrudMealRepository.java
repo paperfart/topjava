@@ -13,8 +13,6 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
-
-
     @Transactional
     @Modifying
     @Query("DELETE FROM Meal m WHERE m.id=:id and m.user.id=:userId")
