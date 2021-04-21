@@ -1,7 +1,5 @@
 package ru.javawebinar.topjava;
 
-import org.springframework.lang.NonNull;
-import org.springframework.test.context.ActiveProfilesResolver;
 import org.springframework.util.ClassUtils;
 
 public class Profiles {
