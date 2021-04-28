@@ -1,6 +1,5 @@
-package ru.javawebinar.topjava.web;
+package ru.javawebinar.topjava.web.meal;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -8,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.web.meal.MealRestController;
+import ru.javawebinar.topjava.service.MealService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -22,9 +21,10 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
 @Controller
 @RequestMapping(value = "/meals")
-public class JspMealController {
-    @Autowired
-    MealRestController controller;
+public class JspMealController extends AbstractMealController {
+    public JspMealController(MealService service) {
+        super(service);
+    }
 
     @PostMapping
     public String meals(HttpServletRequest request) {
@@ -34,22 +34,22 @@ public class JspMealController {
                 Integer.parseInt(request.getParameter("calories")));
 
         if (StringUtils.hasLength(request.getParameter("id"))) {
-            controller.update(meal, getId(request));
+            super.update(meal, getId(request));
         } else {
-            controller.create(meal);
+            super.create(meal);
         }
         return "redirect:/meals";
     }
 
     @GetMapping
     public String getMeals(Model model) {
-        model.addAttribute("meals", controller.getAll());
+        model.addAttribute("meals", super.getAll());
         return "meals";
     }
 
     @GetMapping("delete")
     public String deleteMeal(HttpServletRequest request) {
-        controller.delete(getId(request));
+        super.delete(getId(request));
         return "redirect:/meals";
     }
 
@@ -61,7 +61,7 @@ public class JspMealController {
 
     @GetMapping("update")
     public String updateMeal(HttpServletRequest request, Model model) {
-        model.addAttribute("meal", controller.get(getId(request)));
+        model.addAttribute("meal", super.get(getId(request)));
         return "mealForm";
     }
 
@@ -71,7 +71,7 @@ public class JspMealController {
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
         LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
         LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
-        model.addAttribute("meals", controller.getBetween(startDate, startTime, endDate, endTime));
+        model.addAttribute("meals", super.getBetween(startDate, startTime, endDate, endTime));
         return "meals";
     }
 
