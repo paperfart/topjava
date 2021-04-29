@@ -6,8 +6,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javawebinar.topjava.UserTestData.USER_MATCHER;
-import static ru.javawebinar.topjava.UserTestData.user;
 
 public class ResourceControllerTest extends AbstractControllerTest {
 
