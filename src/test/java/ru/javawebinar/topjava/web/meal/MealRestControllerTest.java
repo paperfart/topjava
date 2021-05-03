@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.MultiValueMap;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
@@ -28,6 +29,7 @@ import static ru.javawebinar.topjava.util.MealsUtil.getTos;
 
 class MealRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = MealRestController.REST_URL + '/';
+    private static final int MEAL4_ID = MEAL1_ID + 3;
 
     @Autowired
     private MealService service;
@@ -85,8 +87,10 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
-        List<MealTo> mealTos = getTos(meals, DEFAULT_CALORIES_PER_DAY).stream().filter(mealTo -> !mealTo.getId().equals(100005)).collect(Collectors.toList());
-        perform(MockMvcRequestBuilders.get(REST_URL + "filter?" + "start=2019-10-31 00:30:00" + "&" + "end=2021-10-31 21:30:00"))
+        List<MealTo> mealTos = getTos(meals, DEFAULT_CALORIES_PER_DAY).stream().filter(mealTo -> !mealTo.getId().equals(MEAL4_ID)).collect(Collectors.toList());
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter?")
+                .param("start", "2019-10-31T00:30:00")
+                .param("end", "2021-10-31T21:30:00"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
