@@ -88,7 +88,7 @@ class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void getBetween() throws Exception {
         List<MealTo> mealTos = getTos(meals, DEFAULT_CALORIES_PER_DAY).stream().filter(mealTo -> !mealTo.getId().equals(MEAL4_ID)).collect(Collectors.toList());
-        perform(MockMvcRequestBuilders.get(REST_URL + "filter?")
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
                 .param("start", "2019-10-31T00:30:00")
                 .param("end", "2021-10-31T21:30:00"))
                 .andDo(print())
